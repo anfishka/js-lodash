@@ -16,35 +16,42 @@ let player = 'X';
 
 content.addEventListener("click", handleClick);
 
-function createMarkup(){
+function createMarkup()
+{
     let markup = '';
-    for(let i = 0; i <= 9; i++){
-        markup += `<div class="item" data-id="${i}></div>`
+    for(let i = 1; i <= 9; i++)
+    {
+        markup += `<div class="item" data-id="${i}"></div>`
     }
     content.innerHTML = markup;
 }
 
 createMarkup();
 
-function handleClick(enent){
-    if(event.target === event.currentTarget || event.target.textContent){
+function handleClick(event)
+{
+    if(event.target === event.currentTarget || event.target.textContent)
+    {
         return;
     }
-}
 
-const id = +event.target.dataset.id;
+
+const id = Number(event.target.dataset.id);
 let isWinner = false;
 
-if (player === 'X'){
+if (player === 'X')
+{
     historyX.push(id);
     isWinner = historyX.length >= 3 ? checkWinner(historyX) : false;
 
-}else{
+}else
+{
     historyO.push(id);
     isWinner = historyO.length >= 3 ? checkWinner(historyO) : false;
 }
 
-if(isWinner){
+if(isWinner)
+{
     const instance = basicLightbox.create(`<div class="box">
     <h1>Player - ${player} is winner</h1>
     </div>`)
@@ -57,12 +64,22 @@ if(isWinner){
 event.target.textContent = player;
 player = player === 'X' ? 'O' : 'X';
 
-function checkWinner(arr){
+const lose = [...content.children].every(item=>item.textContent);
+if(lose)
+{
+    resetGame();
+}
+
+
+}
+function checkWinner(arr)
+{
     return combinations.some(item => item.every(id => arr.includes(id)))
 
 }
 
-function  resetGame(){
+function  resetGame()
+{
     createMarkup();
     player = 'X';
     historyX.splice(0);
